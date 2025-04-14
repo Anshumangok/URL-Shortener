@@ -1,4 +1,3 @@
-# URL-Shortener
 # URL Shortener Service
 
 A containerized URL shortening service built with FastAPI and Redis. This service allows you to create short URLs for sharing long links more efficiently.
