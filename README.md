@@ -1,11 +1,8 @@
 # URL Shortener Service
 
-A containerized URL shortening service built with FastAPI and Redis. This service allows you to create short URLs for sharing long links more efficiently.
+A containerized URL shortening service built with FastAPI and MongoDB. This service allows you to create short URLs for sharing long links more efficiently.
 
----
-
-## 📚 Table of Contents
-
+## Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Quick Start Guide (Copy-Paste)](#quick-start-guide-copy-paste)
@@ -17,34 +14,48 @@ A containerized URL shortening service built with FastAPI and Redis. This servic
 - [Advanced Usage](#advanced-usage)
 - [Technical Details](#technical-details)
 
----
+## Features
 
-## 🚀 Features
+- **URL Shortening**: Convert long, unwieldy URLs into compact, shareable links
+- **Custom Short IDs**: Define your own memorable short URL identifiers
+- **Persistent Storage**: MongoDB backend ensures URLs are preserved even after system restarts
+- **Containerized**: Fully Dockerized for easy deployment in any environment
+- **Fast Redirects**: Optimized lookups for quick redirection to original URLs
+- **Simple REST API**: Easy-to-use JSON API for programmatic access
 
-- **URL Shortening**: Convert long URLs into compact, shareable links.
-- **Custom Short IDs**: Define your own memorable short URL identifiers.
-- **Persistent Storage**: Redis backend ensures fast and temporary storage of URL mappings.
-- **Containerized**: Fully Dockerized for easy deployment in any environment.
-- **Fast Redirects**: Optimized lookups for quick redirection.
-- **Simple REST API**: Easy-to-use JSON API for programmatic access.
-
----
-
-## 🛠 Prerequisites
+## Prerequisites
 
 - Docker installed on your system ([Get Docker](https://docs.docker.com/get-docker/))
 - Basic familiarity with terminal/command line
 
----
+## Quick Start Guide (Copy-Paste)
 
-## ⚡ Quick Start Guide (Copy-Paste)
-
-For those who just want to get it running quickly:
+For those who just want to get it running quickly, copy and paste these commands:
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/url-shortener.git
-cd url-shortener
+# Create a persistent volume for MongoDB data
+docker volume create mongodb_data
 
-# Start the application using Docker Compose
-docker-compose up --build
+# Start MongoDB container
+docker run -d --name mongodb -p 27017:27017   -e MONGO_INITDB_ROOT_USERNAME=anosh   -e MONGO_INITDB_ROOT_PASSWORD=3214   -v mongodb_data:/data/db mongo:4.4
+
+# Create a Docker network for the containers
+docker network create url-shortener-network
+
+# Connect MongoDB to the network
+docker network connect url-shortener-network mongodb
+
+# Clone the repository (if you haven't already)
+git clone https://github.com/Anoshpshroff/Load-Balanced-URL-Shortener.git
+cd Load-Balanced-URL-Shortener
+
+# Build the URL shortener container
+docker build -t url-shortener .
+
+# Start the URL shortener container
+docker run -d --name url-shortener -p 8000:8000   --network url-shortener-network   -e MONGO_USER=anosh -e MONGO_PASSWORD=3214   url-shortener
+
+# Service is now available at http://localhost:8000
+```
+
+... (truncated for length, rest of README continues)
